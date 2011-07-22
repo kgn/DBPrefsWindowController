@@ -56,7 +56,7 @@ static DBPrefsWindowController *_sharedPrefsWindowController = nil;
 		viewAnimation = [[NSViewAnimation alloc] init];
 		[viewAnimation setAnimationBlockingMode:NSAnimationNonblocking];
 		[viewAnimation setAnimationCurve:NSAnimationEaseInOut];
-		[viewAnimation setDelegate:self];
+		[viewAnimation setDelegate:(id<NSAnimationDelegate>)self];
 		
 		[self setCrossFade:YES]; 
 		[self setShiftSlowsAnimation:YES];
@@ -206,7 +206,7 @@ static DBPrefsWindowController *_sharedPrefsWindowController = nil;
 		[toolbar setAutosavesConfiguration:NO];
 		[toolbar setSizeMode:NSToolbarSizeModeDefault];
 		[toolbar setDisplayMode:NSToolbarDisplayModeIconAndLabel];
-		[toolbar setDelegate:self];
+		[toolbar setDelegate:(id<NSToolbarDelegate>)self];
 		[[self window] setToolbar:toolbar];
 		[toolbar release];
 	}
@@ -365,16 +365,16 @@ static DBPrefsWindowController *_sharedPrefsWindowController = nil;
 {
 	NSView *subview;
 	
-		// Get a list of all of the views in the window. Hopefully
-		// at this point there are two. One is visible and one is hidden.
+    // Get a list of all of the views in the window. Hopefully
+    // at this point there are two. One is visible and one is hidden.
 	NSEnumerator *subviewsEnum = [[contentSubview subviews] reverseObjectEnumerator];
 	
-		// This is our visible view. Just get past it.
-	subview = [subviewsEnum nextObject];
+    // This is our visible view. Just get past it.
+	[subviewsEnum nextObject];
 
-		// Remove everything else. There should be just one, but
-		// if the user does a lot of fast clicking, we might have
-		// more than one to remove.
+    // Remove everything else. There should be just one, but
+    // if the user does a lot of fast clicking, we might have
+    // more than one to remove.
 	while ((subview = [subviewsEnum nextObject]) != nil) {
 		[subview removeFromSuperviewWithoutNeedingDisplay];
 	}
