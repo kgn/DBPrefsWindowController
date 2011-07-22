@@ -1,0 +1,35 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {openPreferences = id; }; 
+            CLASS = AppController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {openPreferences = id; }; 
+            CLASS = Controller; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = DBPreferencesController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = MyPreferencesController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                displayPreferenceView = NSView; 
+                generalPreferenceView = NSView; 
+                networkPreferenceView = NSView; 
+                personalPreferenceView = NSView; 
+                updatePreferenceView = NSView; 
+            }; 
+            SUPERCLASS = DBPreferencesController; 
+        }
+    ); 
+    IBVersion = 1; 
+}

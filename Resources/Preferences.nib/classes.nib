@@ -1,0 +1,23 @@
+{
+    IBClasses = (
+        {
+            CLASS = AppPrefsWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                advancedPreferenceView = NSView; 
+                colorsPreferenceView = NSView; 
+                generalPreferenceView = NSView; 
+                playbackPreferenceView = NSView; 
+                updatesPreferenceView = NSView; 
+            }; 
+            SUPERCLASS = DBPrefsWindowController; 
+        }, 
+        {
+            CLASS = DBPrefsWindowController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}
