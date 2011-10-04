@@ -4,6 +4,9 @@
 //  Created by Dave Batton
 //  http://www.Mere-Mortal-Software.com/blog/
 //
+//  Updated by David Keegan
+//  https://github.com/InScopeApps/DBPrefsWindowController
+//
 //  Documentation for this class is available here:
 //  http://www.mere-mortal-software.com/blog/details.php?d=2007-03-11
 //
@@ -47,13 +50,12 @@
 	NSMutableDictionary *toolbarViews;
 	NSMutableDictionary *toolbarItems;
 	
-	BOOL _crossFade;
-	BOOL _shiftSlowsAnimation;
-	
 	NSView *contentSubview;
 	NSViewAnimation *viewAnimation;
 }
 
+@property (nonatomic) BOOL crossFade;
+@property (nonatomic) BOOL shiftSlowsAnimation;
 
 + (DBPrefsWindowController *)sharedPrefsWindowController;
 + (NSString *)nibName;
@@ -61,11 +63,6 @@
 - (void)setupToolbar;
 - (void)addView:(NSView *)view label:(NSString *)label;
 - (void)addView:(NSView *)view label:(NSString *)label image:(NSImage *)image;
-
-- (BOOL)crossFade;
-- (void)setCrossFade:(BOOL)fade;
-- (BOOL)shiftSlowsAnimation;
-- (void)setShiftSlowsAnimation:(BOOL)slows;
 
 - (void)toggleActivePreferenceView:(NSToolbarItem *)toolbarItem;
 - (void)displayViewForIdentifier:(NSString *)identifier animate:(BOOL)animate;
