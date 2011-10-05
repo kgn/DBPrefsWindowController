@@ -43,14 +43,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface DBPrefsWindowController : NSWindowController {
-	NSMutableArray *toolbarIdentifiers;
-	NSMutableDictionary *toolbarViews;
-	NSMutableDictionary *toolbarItems;
-	
-	NSView *contentSubview;
-	NSViewAnimation *viewAnimation;
-}
+@interface DBPrefsWindowController : NSWindowController
 
 @property (nonatomic) BOOL crossFade;
 @property (nonatomic) BOOL shiftSlowsAnimation;

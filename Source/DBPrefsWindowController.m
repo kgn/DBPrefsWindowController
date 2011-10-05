@@ -4,7 +4,14 @@
 
 #import "DBPrefsWindowController.h"
 
-@implementation DBPrefsWindowController
+@implementation DBPrefsWindowController {
+	NSMutableArray *toolbarIdentifiers;
+	NSMutableDictionary *toolbarViews;
+	NSMutableDictionary *toolbarItems;
+	
+	NSView *contentSubview;
+	NSViewAnimation *viewAnimation;
+}
 
 @synthesize crossFade = _crossFade;
 @synthesize shiftSlowsAnimation = _shiftSlowsAnimation;
