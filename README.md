@@ -5,7 +5,7 @@ Originally created by [Dave Batton](http://www.mere-mortal-software.com/blog/det
 
 Application preference windows aren’t difficult to create. Just create an NSWindowController, set up a toolbar, create a nib file with either a series of custom views, or with an NSTabView object. The problem is, just setting up the toolbar and view swapping mechanism takes a lot of code, and it’s basically the same for every application. Sounds like an excellent opportunity to create a new class.
 
-![](https://github.com/InScopeApps/DBPrefsWindowController/raw/master/prefswindow.jpg)
+![](https://github.com/kgn/DBPrefsWindowController/raw/master/prefswindow.jpg)
 
 The goal of DBPrefsWindowController is to reduce the overhead of creating preference tabs to one line of code for each toolbar icon. This is achieved with an NSWindowController subclass named DBPrefsWindowController.
 
