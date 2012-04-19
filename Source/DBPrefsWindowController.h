@@ -5,7 +5,7 @@
 //  http://www.Mere-Mortal-Software.com/blog/
 //
 //  Updated by David Keegan
-//  https://github.com/InScopeApps/DBPrefsWindowController
+//  https://github.com/kgn/DBPrefsWindowController
 //
 //  Documentation for this class is available here:
 //  http://www.mere-mortal-software.com/blog/details.php?d=2007-03-11
