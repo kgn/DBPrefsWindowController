@@ -287,4 +287,14 @@
 	return windowFrame;
 }
 
+// Close the window with cmd+w incase the app doesn't have an app menu
+- (void)keyDown:(NSEvent *)theEvent{
+    NSString *key = [theEvent charactersIgnoringModifiers];
+    if(([theEvent modifierFlags] & NSCommandKeyMask) && [key isEqualToString:@"w"]){
+        [self close];
+    }else{
+        [super keyDown:theEvent];
+    }
+}
+
 @end
