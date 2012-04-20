@@ -105,6 +105,11 @@
     [item setAction:@selector(toggleActivePreferenceView:)];
 
     [toolbarItems setObject:item forKey:identifier];
+    
+#if !__has_feature(objc_arc)    
+    [identifier release];
+    [item release];
+#endif
 }
 
 
