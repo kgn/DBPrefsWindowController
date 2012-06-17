@@ -214,6 +214,11 @@
     }
 }
 
+- (void)loadViewForIdentifier:(NSString *)identifier animate:(BOOL)animate {
+    [[[self window] toolbar] setSelectedItemIdentifier:identifier];
+    [self displayViewForIdentifier:identifier animate:animate];
+}
+
 
 #pragma mark -
 #pragma mark Cross-Fading Methods
