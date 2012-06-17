@@ -60,4 +60,7 @@
 - (void)crossFadeView:(NSView *)oldView withView:(NSView *)newView;
 - (NSRect)frameForView:(NSView *)view;
 
+// select both the view & toolbar item for the given identifier
+- (void)loadViewForIdentifier:(NSString *)identifier animate:(BOOL)animate;
+
 @end
