@@ -94,22 +94,11 @@
     }
 	
     NSString *identifier = [label copy];
-
-    [toolbarIdentifiers addObject:identifier];
-    [toolbarViews setObject:view forKey:identifier];
-
-    NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:identifier];
-    [item setLabel:label];
-    [item setImage:image];
-    [item setTarget:self];
-    [item setAction:@selector(toggleActivePreferenceView:)];
-
-    [toolbarItems setObject:item forKey:identifier];
-    
-#if !__has_feature(objc_arc)    
-    [identifier release];
-    [item release];
-#endif
+    [self.toolbarViews setObject:view forKey:identifier];
+    [self addToolbarItemForIdentifier:identifier
+                                label:label
+                                image:image
+                             selector:@selector(toggleActivePreferenceView:)];
 }
 
 
