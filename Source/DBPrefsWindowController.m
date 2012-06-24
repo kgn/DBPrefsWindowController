@@ -4,18 +4,24 @@
 
 #import "DBPrefsWindowController.h"
 
-@implementation DBPrefsWindowController {
-	NSMutableArray *toolbarIdentifiers;
-	NSMutableDictionary *toolbarViews;
-	NSMutableDictionary *toolbarItems;
-	
-	NSView *contentSubview;
-	NSViewAnimation *viewAnimation;
-}
+@interface DBPrefsWindowController()
+@property (nonatomic, strong) NSMutableArray *toolbarIdentifiers;
+@property (nonatomic, strong) NSMutableDictionary *toolbarViews;
+@property (nonatomic, strong) NSMutableDictionary *toolbarItems;
+@property (nonatomic, strong) NSView *contentSubview;
+@property (nonatomic, strong) NSViewAnimation *viewAnimation;
+
+@end
+
+@implementation DBPrefsWindowController
 
 @synthesize crossFade = _crossFade;
 @synthesize shiftSlowsAnimation = _shiftSlowsAnimation;
-
+@synthesize toolbarIdentifiers = _toolbarIdentifiers;
+@synthesize toolbarItems = _toolbarItems;
+@synthesize toolbarViews = _toolbarViews;
+@synthesize contentSubview = _contentSubview;
+@synthesize viewAnimation = _viewAnimation;
 
 #pragma mark -
 #pragma mark Class Methods
@@ -41,15 +47,15 @@
 	if((self = [super initWithWindow:nil])){
         // Set up an array and some dictionaries to keep track
         // of the views we'll be displaying.
-        toolbarIdentifiers = [[NSMutableArray alloc] init];
-        toolbarViews = [[NSMutableDictionary alloc] init];
-        toolbarItems = [[NSMutableDictionary alloc] init];
+        self.toolbarIdentifiers = [[NSMutableArray alloc] init];
+        self.toolbarViews = [[NSMutableDictionary alloc] init];
+        self.toolbarItems = [[NSMutableDictionary alloc] init];
 
         // Set up an NSViewAnimation to animate the transitions.
-        viewAnimation = [[NSViewAnimation alloc] init];
-        [viewAnimation setAnimationBlockingMode:NSAnimationNonblocking];
-        [viewAnimation setAnimationCurve:NSAnimationEaseInOut];
-        [viewAnimation setDelegate:(id<NSAnimationDelegate>)self];
+        self.viewAnimation = [[NSViewAnimation alloc] init];
+        [self.viewAnimation setAnimationBlockingMode:NSAnimationNonblocking];
+        [self.viewAnimation setAnimationCurve:NSAnimationEaseInOut];
+        [self.viewAnimation setDelegate:(id<NSAnimationDelegate>)self];
 
         self.crossFade = YES;
         self.shiftSlowsAnimation = YES;
@@ -69,9 +75,9 @@
                                   backing:NSBackingStoreBuffered
                                     defer:YES];
     [self setWindow:window];
-    contentSubview = [[NSView alloc] initWithFrame:[[[self window] contentView] frame]];
-    [contentSubview setAutoresizingMask:(NSViewMinYMargin | NSViewWidthSizable)];
-    [[[self window] contentView] addSubview:contentSubview];
+    self.contentSubview = [[NSView alloc] initWithFrame:[[[self window] contentView] frame]];
+    [self.contentSubview setAutoresizingMask:(NSViewMinYMargin | NSViewWidthSizable)];
+    [[[self window] contentView] addSubview:self.contentSubview];
     [[self window] setShowsToolbarButton:NO];
 }
 
@@ -82,6 +88,25 @@
 - (void)setupToolbar{
     // Subclasses must override this method to add items to the
     // toolbar by calling -addView:label: or -addView:label:image:.
+}
+
+- (void)addToolbarItemForIdentifier:(NSString *)identifier
+                              label:(NSString *)label
+                              image:(NSImage *)image
+                           selector:(SEL)selector {
+    [self.toolbarIdentifiers addObject:identifier];
+    
+    NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:identifier];
+    [item setLabel:label];
+    [item setImage:image];
+    [item setTarget:self];
+    [item setAction:selector];
+    
+    [self.toolbarItems setObject:item forKey:identifier];
+}
+
+- (void)addFlexibleSpacer {
+    [self addToolbarItemForIdentifier:NSToolbarFlexibleSpaceItemIdentifier label:nil image:nil selector:nil];
 }
 
 - (void)addView:(NSView *)view label:(NSString *)label{
@@ -110,12 +135,12 @@
     [self window];
 
     // Clear the last setup and get a fresh one.
-    [toolbarIdentifiers removeAllObjects];
-    [toolbarViews removeAllObjects];
-    [toolbarItems removeAllObjects];
+    [self.toolbarIdentifiers removeAllObjects];
+    [self.toolbarViews removeAllObjects];
+    [self.toolbarItems removeAllObjects];
     [self setupToolbar];
 
-    if(![toolbarIdentifiers count]){
+    if(![_toolbarIdentifiers count]){
         return;
     }
 
@@ -129,7 +154,7 @@
         [[self window] setToolbar:toolbar];
     }
 
-    NSString *firstIdentifier = [toolbarIdentifiers objectAtIndex:0];
+    NSString *firstIdentifier = [self.toolbarIdentifiers objectAtIndex:0];
     [[[self window] toolbar] setSelectedItemIdentifier:firstIdentifier];
     [self displayViewForIdentifier:firstIdentifier animate:NO];
 
@@ -143,19 +168,19 @@
 #pragma mark Toolbar
 
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar{
-	return toolbarIdentifiers;
+	return self.toolbarIdentifiers;
 }
 
 - (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar{
-	return toolbarIdentifiers;
+	return self.toolbarIdentifiers;
 }
 
 - (NSArray *)toolbarSelectableItemIdentifiers:(NSToolbar *)toolbar{
-	return toolbarIdentifiers;
+	return self.toolbarIdentifiers;
 }
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)identifier willBeInsertedIntoToolbar:(BOOL)willBeInserted{
-	return [toolbarItems objectForKey:identifier];
+	return [self.toolbarItems objectForKey:identifier];
 }
 
 - (void)toggleActivePreferenceView:(NSToolbarItem *)toolbarItem{
@@ -164,15 +189,15 @@
 
 - (void)displayViewForIdentifier:(NSString *)identifier animate:(BOOL)animate{	
     // Find the view we want to display.
-    NSView *newView = [toolbarViews objectForKey:identifier];
+    NSView *newView = [self.toolbarViews objectForKey:identifier];
 
     // See if there are any visible views.
     NSView *oldView = nil;
-    if([[contentSubview subviews] count] > 0) {
+    if([[self.contentSubview subviews] count] > 0) {
         // Get a list of all of the views in the window. Usually at this
         // point there is just one visible view. But if the last fade
         // hasn't finished, we need to get rid of it now before we move on.
-        NSEnumerator *subviewsEnum = [[contentSubview subviews] reverseObjectEnumerator];
+        NSEnumerator *subviewsEnum = [[self.contentSubview subviews] reverseObjectEnumerator];
 
         // The first one (last one added) is our visible view.
         oldView = [subviewsEnum nextObject];
@@ -186,9 +211,9 @@
 
     if(![newView isEqualTo:oldView]){
         NSRect frame = [newView bounds];
-        frame.origin.y = NSHeight([contentSubview frame]) - NSHeight([newView bounds]);
+        frame.origin.y = NSHeight([self.contentSubview frame]) - NSHeight([newView bounds]);
         [newView setFrame:frame];
-        [contentSubview addSubview:newView];
+        [self.contentSubview addSubview:newView];
         [[self window] setInitialFirstResponder:newView];
 
         if(animate && [self crossFade]){
@@ -199,7 +224,7 @@
             [[self window] setFrame:[self frameForView:newView] display:YES animate:animate];
         }
 
-        [[self window] setTitle:[[toolbarItems objectForKey:identifier] label]];
+        [[self window] setTitle:[[self.toolbarItems objectForKey:identifier] label]];
     }
 }
 
@@ -213,12 +238,12 @@
 #pragma mark Cross-Fading Methods
 
 - (void)crossFadeView:(NSView *)oldView withView:(NSView *)newView{
-    [viewAnimation stopAnimation];
+    [self.viewAnimation stopAnimation];
 
     if([self shiftSlowsAnimation] && [[[self window] currentEvent] modifierFlags] & NSShiftKeyMask){
-        [viewAnimation setDuration:1.25];
+        [self.viewAnimation setDuration:1.25];
     }else{
-        [viewAnimation setDuration:0.25];
+        [self.viewAnimation setDuration:0.25];
     }
 
     NSDictionary *fadeOutDictionary = 
@@ -247,8 +272,8 @@
      resizeDictionary,
      nil];
 
-    [viewAnimation setViewAnimations:animationArray];
-    [viewAnimation startAnimation];
+    [self.viewAnimation setViewAnimations:animationArray];
+    [self.viewAnimation startAnimation];
 }
 
 - (void)animationDidEnd:(NSAnimation *)animation{
@@ -256,7 +281,7 @@
 
     // Get a list of all of the views in the window. Hopefully
     // at this point there are two. One is visible and one is hidden.
-    NSEnumerator *subviewsEnum = [[contentSubview subviews] reverseObjectEnumerator];
+    NSEnumerator *subviewsEnum = [[self.contentSubview subviews] reverseObjectEnumerator];
 
     // This is our visible view. Just get past it.
     [subviewsEnum nextObject];

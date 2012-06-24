@@ -32,6 +32,7 @@
 + (NSString *)nibName;
 
 - (void)setupToolbar;
+- (void)addFlexibleSpacer;
 - (void)addView:(NSView *)view label:(NSString *)label;
 - (void)addView:(NSView *)view label:(NSString *)label image:(NSImage *)image;
 
