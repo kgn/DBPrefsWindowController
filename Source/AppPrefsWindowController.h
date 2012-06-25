@@ -2,18 +2,15 @@
 //  AppPrefsWindowController.h
 //
 
-
 #import <Cocoa/Cocoa.h>
 #import "DBPrefsWindowController.h"
 
+@interface AppPrefsWindowController : DBPrefsWindowController
 
-@interface AppPrefsWindowController : DBPrefsWindowController {
-	IBOutlet NSView *generalPreferenceView;
-	IBOutlet NSView *colorsPreferenceView;
-	IBOutlet NSView *playbackPreferenceView;
-	IBOutlet NSView *updatesPreferenceView;
-	IBOutlet NSView *advancedPreferenceView;
-}
-
+@property (strong, nonatomic) IBOutlet NSView *generalPreferenceView;
+@property (strong, nonatomic) IBOutlet NSView *colorsPreferenceView;
+@property (strong, nonatomic) IBOutlet NSView *playbackPreferenceView;
+@property (strong, nonatomic) IBOutlet NSView *updatesPreferenceView;
+@property (strong, nonatomic) IBOutlet NSView *advancedPreferenceView;
 
 @end
