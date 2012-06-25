@@ -17,7 +17,8 @@
 	[self addView:colorsPreferenceView label:@"Colors"];
 	[self addView:playbackPreferenceView label:@"Playback"];
 	[self addView:updatesPreferenceView label:@"Updates"];
-	[self addView:advancedPreferenceView label:@"Advanced"];
+	[self addFlexibleSpacer];
+    [self addView:advancedPreferenceView label:@"Advanced"];
 	
 		// Optional configuration settings.
 	[self setCrossFade:[[NSUserDefaults standardUserDefaults] boolForKey:@"fade"]];
