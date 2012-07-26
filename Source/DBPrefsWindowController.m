@@ -102,7 +102,7 @@
     [item setTarget:self];
     [item setAction:selector];
     
-    [self.toolbarItems setObject:item forKey:identifier];
+    (self.toolbarItems)[identifier] = item;
 }
 
 - (void)addFlexibleSpacer {
@@ -119,7 +119,7 @@
     }
 	
     NSString *identifier = [label copy];
-    [self.toolbarViews setObject:view forKey:identifier];
+    (self.toolbarViews)[identifier] = view;
     [self addToolbarItemForIdentifier:identifier
                                 label:label
                                 image:image
@@ -154,7 +154,7 @@
         [[self window] setToolbar:toolbar];
     }
 
-    NSString *firstIdentifier = [self.toolbarIdentifiers objectAtIndex:0];
+    NSString *firstIdentifier = (self.toolbarIdentifiers)[0];
     [[[self window] toolbar] setSelectedItemIdentifier:firstIdentifier];
     [self displayViewForIdentifier:firstIdentifier animate:NO];
 
@@ -180,7 +180,7 @@
 }
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)identifier willBeInsertedIntoToolbar:(BOOL)willBeInserted{
-	return [self.toolbarItems objectForKey:identifier];
+	return (self.toolbarItems)[identifier];
 }
 
 - (void)toggleActivePreferenceView:(NSToolbarItem *)toolbarItem{
@@ -189,7 +189,7 @@
 
 - (void)displayViewForIdentifier:(NSString *)identifier animate:(BOOL)animate{	
     // Find the view we want to display.
-    NSView *newView = [self.toolbarViews objectForKey:identifier];
+    NSView *newView = (self.toolbarViews)[identifier];
 
     // See if there are any visible views.
     NSView *oldView = nil;
@@ -224,7 +224,7 @@
             [[self window] setFrame:[self frameForView:newView] display:YES animate:animate];
         }
 
-        [[self window] setTitle:[[self.toolbarItems objectForKey:identifier] label]];
+        [[self window] setTitle:[(self.toolbarItems)[identifier] label]];
     }
 }
 
@@ -247,30 +247,22 @@
     }
 
     NSDictionary *fadeOutDictionary = 
-    [NSDictionary dictionaryWithObjectsAndKeys:
-     oldView, NSViewAnimationTargetKey,
-     NSViewAnimationFadeOutEffect, NSViewAnimationEffectKey,
-     nil];
+    @{NSViewAnimationTargetKey: oldView,
+     NSViewAnimationEffectKey: NSViewAnimationFadeOutEffect};
 
     NSDictionary *fadeInDictionary = 
-    [NSDictionary dictionaryWithObjectsAndKeys:
-     newView, NSViewAnimationTargetKey,
-     NSViewAnimationFadeInEffect, NSViewAnimationEffectKey,
-     nil];
+    @{NSViewAnimationTargetKey: newView,
+     NSViewAnimationEffectKey: NSViewAnimationFadeInEffect};
 
     NSDictionary *resizeDictionary = 
-    [NSDictionary dictionaryWithObjectsAndKeys:
-     [self window], NSViewAnimationTargetKey,
-     [NSValue valueWithRect:[[self window] frame]], NSViewAnimationStartFrameKey,
-     [NSValue valueWithRect:[self frameForView:newView]], NSViewAnimationEndFrameKey,
-     nil];
+    @{NSViewAnimationTargetKey: [self window],
+     NSViewAnimationStartFrameKey: [NSValue valueWithRect:[[self window] frame]],
+     NSViewAnimationEndFrameKey: [NSValue valueWithRect:[self frameForView:newView]]};
 
     NSArray *animationArray = 
-    [NSArray arrayWithObjects:
-     fadeOutDictionary,
+    @[fadeOutDictionary,
      fadeInDictionary,
-     resizeDictionary,
-     nil];
+     resizeDictionary];
 
     [self.viewAnimation setViewAnimations:animationArray];
     [self.viewAnimation startAnimation];
