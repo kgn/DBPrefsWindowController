@@ -6,12 +6,6 @@
 
 @implementation AppPrefsWindowController
 
-@synthesize generalPreferenceView = _generalPreferenceView;
-@synthesize colorsPreferenceView = _colorsPreferenceView;
-@synthesize playbackPreferenceView = _playbackPreferenceView;
-@synthesize updatesPreferenceView = _updatesPreferenceView;
-@synthesize advancedPreferenceView = _advancedPreferenceView;
-
 - (void)setupToolbar{
     [self addView:self.generalPreferenceView label:@"General"];
     [self addView:self.colorsPreferenceView label:@"Colors"];

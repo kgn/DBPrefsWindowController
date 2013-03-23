@@ -15,8 +15,8 @@
 
 @interface DBPrefsWindowController : NSWindowController
 
-@property BOOL crossFade;
-@property BOOL shiftSlowsAnimation;
+@property (nonatomic) BOOL crossFade;
+@property (nonatomic) BOOL shiftSlowsAnimation;
 
 + (DBPrefsWindowController *)sharedPrefsWindowController;
 + (NSString *)nibName;

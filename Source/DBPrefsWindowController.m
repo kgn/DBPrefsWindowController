@@ -8,20 +8,11 @@
 @property (nonatomic, strong) NSMutableArray *toolbarIdentifiers;
 @property (nonatomic, strong) NSMutableDictionary *toolbarViews;
 @property (nonatomic, strong) NSMutableDictionary *toolbarItems;
-@property (nonatomic, strong) NSView *contentSubview;
 @property (nonatomic, strong) NSViewAnimation *viewAnimation;
-
+@property (nonatomic, strong) NSView *contentSubview;
 @end
 
 @implementation DBPrefsWindowController
-
-@synthesize crossFade = _crossFade;
-@synthesize shiftSlowsAnimation = _shiftSlowsAnimation;
-@synthesize toolbarIdentifiers = _toolbarIdentifiers;
-@synthesize toolbarItems = _toolbarItems;
-@synthesize toolbarViews = _toolbarViews;
-@synthesize contentSubview = _contentSubview;
-@synthesize viewAnimation = _viewAnimation;
 
 #pragma mark -
 #pragma mark Class Methods
